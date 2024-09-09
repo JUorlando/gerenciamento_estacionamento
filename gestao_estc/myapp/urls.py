@@ -1,6 +1,11 @@
+# urls.py
 from django.urls import path
-from .views import registrar_entrada
+from . import views
 
 urlpatterns = [
-    path('entrada', registrar_entrada),
+    path('entrada/', views.registrar_entrada, name='registrar_entrada'),
+    path('saida/', views.registrar_saida, name='registrar_saida'),
+    path('valor/', views.calcular_valor, name='calcular_valor'),
+    path('pagar/', views.registrar_pagamento, name='registrar_pagamento'),
 ]
+
