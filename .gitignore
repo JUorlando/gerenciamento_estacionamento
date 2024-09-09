@@ -1,1 +1,6 @@
 env
+*cache*
+.env
+*lock
+.vscode
+db.sqlite3

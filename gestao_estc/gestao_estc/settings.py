@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'gestao_estc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gestaoDB',
+        'NAME': 'gestaodb',
         'USER': 'postgres',
         'PASSWORD': '123',
         'HOST': 'localhost',

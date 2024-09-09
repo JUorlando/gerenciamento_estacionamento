@@ -6,3 +6,4 @@ class EntradaDeVeiculo(models.Model):
 
     def __str__(self):
         return self.placa
+

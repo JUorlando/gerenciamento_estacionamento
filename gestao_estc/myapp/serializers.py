@@ -5,3 +5,5 @@ class EntradaDeVeiculoSerializer(serializers.ModelSerializer):
     class Meta:
         model = EntradaDeVeiculo
         fields = ['placa', 'data_entrada']
+
+class SaidaDeVeiculo(serializers)
