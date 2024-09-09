@@ -6,4 +6,3 @@ class EntradaDeVeiculoSerializer(serializers.ModelSerializer):
         model = EntradaDeVeiculo
         fields = ['placa', 'data_entrada']
 
-class SaidaDeVeiculo(serializers)
