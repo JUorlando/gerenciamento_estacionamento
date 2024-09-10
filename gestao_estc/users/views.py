@@ -36,7 +36,7 @@ class LoginView(APIView):
 
         if not user:
             return Response(
-                {"detail": "No active account found with the given credentials"},
+                {"detail": "Não existe uma conta com esses dados."},
                 status.HTTP_401_UNAUTHORIZED,
             )
 
