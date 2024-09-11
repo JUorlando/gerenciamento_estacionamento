@@ -7,5 +7,6 @@ urlpatterns = [
     path('saida/', views.RegistrarSaidaView.as_view()),
     path('valor/', views.CalcularValorView.as_view()),
     path('pagar/', views.RegistrarPagamentoView.as_view()),
+    path('relatorio/', views.RelatorioView.as_view()),
 ]
 

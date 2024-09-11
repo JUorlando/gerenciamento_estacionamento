@@ -142,3 +142,31 @@ class RegistrarSaidaView(APIView):
             {"placa": saida.entrada.placa, "data_saida": saida.data_saida},
             status=status.HTTP_201_CREATED,
         )
+
+
+class RelatorioView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        entradas = EntradaDeVeiculo.objects.all().order_by("-data_entrada")
+        saidas = SaidaDeVeiculo.objects.all().order_by("-data_saida")
+
+        relatorio = []
+
+        for entrada in entradas:
+            saida = saidas.filter(
+                entrada=entrada
+            ).first()
+
+            relatorio.append(
+                {
+                    "placa": entrada.placa,
+                    "data_entrada": entrada.data_entrada,
+                    "data_saida": saida.data_saida if saida else "",
+                    "valor_pago": saida.valor_pago if saida else "",
+                    "pago": saida.pago if saida else False,
+                }
+            )
+
+        return Response(relatorio, status=status.HTTP_200_OK)
