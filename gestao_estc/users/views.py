@@ -6,6 +6,7 @@ from rest_framework import generics
 from rest_framework.views import APIView, Request, Response, status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class UserView(generics.ListCreateAPIView):
@@ -21,7 +22,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-class LoginView(APIView):
+class LoginView(TokenObtainPairView):
     queryset = User
     serializer_class = LoginSerializer
 

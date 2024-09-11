@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class EntradaDeVeiculo(models.Model):
-    placa = models.CharField(max_length=7)
+    placa = models.CharField(max_length=10)
     data_entrada = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

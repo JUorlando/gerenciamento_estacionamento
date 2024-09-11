@@ -154,9 +154,7 @@ class RelatorioView(APIView):
         relatorio = []
 
         for entrada in entradas:
-            saida = saidas.filter(
-                entrada=entrada
-            ).first()
+            saida = saidas.filter(entrada=entrada).first()
 
             relatorio.append(
                 {

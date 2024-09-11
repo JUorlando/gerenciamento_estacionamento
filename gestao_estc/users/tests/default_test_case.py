@@ -1,19 +1,15 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
-from ..models import User
 from rest_framework import status
 from rest_framework.utils.serializer_helpers import ReturnList
-
+from django.urls import reverse
+from ..models import User
 
 class DefaultTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        ...
-
-    @classmethod
-    def setUpClass(cls):
         cls.user_request = {
-            "username": "JUolando",
+            "username": "JUorlando",
             "email": "juorlando@example.com",
             "password": "senha123",
             "first_name": "Junior Orlando",
@@ -22,7 +18,7 @@ class DefaultTestCase(TestCase):
 
         cls.user_login = {"username": "JUorlando", "password": "senha123"}
 
-        cls.url_login = "/api/login/"
+        cls.url_login = "/api/users/login/"
         cls.url_requests = "/api/users/"
         cls.url_retrieve_user_not_found = "/api/users/99999/"
 
@@ -34,28 +30,28 @@ class DefaultTestCase(TestCase):
 
     @classmethod
     def setUp(cls):
+        cls.client = APIClient()  # Inicializa o cliente da API
         cls.user = User.objects.create_user(**cls.user_request)
-
         cls.url_retrieve_user = f"/api/users/{cls.user.id}/"
+        cls.client = cls.login_apiclient(cls.user_login)
 
     @classmethod
     def message_test(cls):
         print("=" * 50)
 
     @classmethod
-    def login_apiclient(cls, login_data, auth=True):
-        client_login = APIClient()
+    def login_apiclient(cls, user_login):
+        login_url = reverse("user-login")
+        response = cls.client.post(login_url, user_login, format="json")
 
-        if not auth:
-            return client_login
-
-        login_response = client_login.post(cls.url_login, login_data, format="json")
-        token = login_response.data["access"]
-
-        client = APIClient()
-        client.credentials(HTTP_AUTHORIZATION="Bearer " + token)
-
-        return client
+        if response.status_code == 200:
+            token = response.data.get("access")
+            if not token:
+                raise ValueError("A chave 'access' não foi encontrada na resposta.")
+            cls.client.credentials(HTTP_AUTHORIZATION="Bearer " + token)
+            return cls.client
+        else:
+            raise ValueError("Falha ao fazer login.")
 
     def responseAssertMissingToken(self, response):
         """Response detail: Authentication credentials were not provided."""
@@ -80,3 +76,4 @@ class DefaultTestCase(TestCase):
         self.assertIn("previous", response.data)
         self.assertIn("results", response.data)
         self.assertIsInstance(response.data["results"], ReturnList)
+
