@@ -9,12 +9,19 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance: User, validated_data: dict) -> User:
         for key, value in validated_data.items():
-            setattr(instance, key, value)
-
-        instance.set_password(instance.password)
+            if key == "password":
+                instance.set_password(value)
+            else:
+                setattr(instance, key, value)
         instance.save()
-
         return instance
+
+    def validate_password(self, value):
+        if len(value) < 6:
+            raise serializers.ValidationError(
+                "A senha deve ter pelo menos 6 caracteres."
+            )
+        return value
 
     class Meta:
         model = User
@@ -47,6 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
             },
         }
 
+
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=150, write_only=True)
-    password = serializers.CharField(max_length=127, write_only=True)
+    username = serializers.CharField(max_length=150, write_only=True, required=True)
+    password = serializers.CharField(max_length=127, write_only=True, required=True)
